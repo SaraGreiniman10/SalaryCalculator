@@ -1,0 +1,162 @@
+<form [formGroup]="salaryForm" (ngSubmit)="onSubmit()">
+    <!-- טבלה להזמת פרטי העובד: -->
+    <table>
+        <thead>
+            <tr>
+            <th colspan="2">
+                מילוי פרטי עובד
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>חלקיות משרה</td>
+                <td>
+                    <select formControlName="employmentPercentage">
+                        <option value="100">100%</option>
+                        <option value="75">75%</option>
+                        <option value="50">50%</option>
+                      </select>
+                </td>
+            </tr>
+            <tr>
+                <td>רמה מקצועית</td>
+                <td>
+                    <select formControlName="professionalLevel">
+                        <option value="0">מתחיל</option>
+                        <option value="1">מנוסה</option>
+                      </select>
+                </td>
+            </tr> 
+            <tr>
+                <td>רמה ניהולית</td>
+                <td>
+                    <select formControlName="managementLevel">
+                        <option [value]="ManagementLevel.None">ללא</option>
+                        <option [value]="ManagementLevel.Level1">רמת ניהול 1</option>
+                        <option [value]="ManagementLevel.Level2">רמת ניהול 2</option>
+                        <option [value]="ManagementLevel.Level3">רמת ניהול 3</option>
+                        <option [value]="ManagementLevel.Level4">רמת ניהול 4</option>
+                      </select>
+                </td>
+            </tr> 
+            <tr>
+                <td>סה"כ שנות וותק</td>
+                <td>
+                    <input type="number" formControlName="yearsOfExperience" min="0">
+                </td>
+            </tr> 
+            <tr>
+                <td>האם זכאי לתוספת עבודה בחוק</td>
+                <td>
+                    <label><input type="radio" formControlName="isEligibleForAddition" value="true"> כן</label>
+                    <label><input type="radio" formControlName="isEligibleForAddition" value="false"> לא</label>          
+                </td>
+            </tr> 
+            <tr  *ngIf="salaryForm.get('isEligibleForAddition')?.value === 'true'">
+                <td> שייכות לקבוצה</td>
+                <td>
+                    <select formControlName="additionGroup">
+                        <option [value]="0">א</option>
+                        <option [value]="1">ב</option>
+                      </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="submit">חשב את השכר שלי</button>
+</form>
+
+<!-- טבלת תצוגה של פרטי העובד+ פרטי המשכורת לאחר החישובים כנדרש: -->
+<table *ngIf="formSubmitted"> 
+    <thead>
+      <tr>
+        <th colspan="9">חישוב רכיבי שכר בסיס</th>
+      </tr>
+      <tr>
+      <tr>
+        <th>שכר יסוד</th>
+
+        <th>שכר יסוד לפי חלקיות משרה</th>
+
+        <th>תוספת וותק לשכר</th>
+        <th>תוספת וותק לשכר</th>
+
+        <th>תוספת עבודה בחוק</th>
+        <th>תוספת עבודה בחוק</th>
+        <th>סה"כ שכר בסיס לפני העלאה</th>
+        <th>שיעור העלאת שכר</th>
+        <th>תוספת העלאת שכר</th>
+        <th>שכר בסיס חדש</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+          <td>
+              <table>
+                  <thead>
+                  <tr>
+        <th>חלקיות משרה</th>
+        <th>רמה מקצועית</th>
+        <th>רמה ניהולית</th>
+      </tr>
+  </thead>
+  <tbody>
+<td>{{employee?.employmentPercentage}}%</td>
+        
+        <td *ngIf="employee.professionalLevel == 0">מתחיל</td>
+        <td *ngIf="employee.professionalLevel == 1">מנוסה</td>
+        <td>רמת ניהול {{employee?.managementLevel}}</td>
+  </tbody>
+              </table>
+          </td>
+       
+        <td>{{calculationResult?.basicSalary}}</td>
+
+       <td>
+       <table>
+          <thead>
+           <tr>
+       <th>סה"כ שנות וותק</th>
+        <th>שיעור תוספת וותק</th>
+           </tr>
+          </thead>
+          <tbody>
+              <td>
+                  {{employee?.yearsOfExperience}}
+              </td>
+                
+                    <td>{{calculationResult?.seniorityBonusPercentage}}%</td>
+                
+          </tbody>
+       </table>
+      </td>
+
+        <td>{{calculationResult?.seniorityBonus}}</td>
+
+        <td>
+          <table>
+              <thead>
+  <tr>
+               <th>האם זכאי לתוספת עבודה בחוק</th>
+        <th>קבוצת תוספת עבודה בחוק</th>
+  </tr>
+              </thead>
+              <tbody>
+            <td *ngIf="employee.isEligibleForAddition==false">לא</td>
+            <td *ngIf="employee.isEligibleForAddition==true">כן</td>
+
+        <td *ngIf="employee.additionGroup==0">קבוצה א</td>
+        <td *ngIf="employee.additionGroup==1">קבוצה ב</td>
+              </tbody>
+          </table>
+        </td>
+       
+        <td>{{calculationResult?.lawAddition}}</td>
+        <td>{{calculationResult?.totalBaseSalary}}</td>
+        <td>{{calculationResult?.salaryIncreasePercentage}}%</td>
+        <td>{{calculationResult?.salaryIncrease}}</td>
+        <td>{{calculationResult?.newBaseSalary}}</td>
+      </tr>
+    </tbody>
+  </table>

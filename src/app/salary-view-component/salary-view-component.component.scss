@@ -1,0 +1,30 @@
+/* salary-view-component.component.scss */
+body, table {
+    direction: rtl;
+    text-align: right;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+thead th {
+    background-color: #a5d6a7;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+button {
+    margin-top: 10px;
+}
