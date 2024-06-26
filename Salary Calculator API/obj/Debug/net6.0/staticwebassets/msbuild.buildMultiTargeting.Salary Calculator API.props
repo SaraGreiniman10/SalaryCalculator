@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Salary Calculator API.props" />
+</Project>
